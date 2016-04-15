@@ -4,11 +4,13 @@
 var port = parseInt(process.argv[2]);
 var debug = JSON.parse(process.argv[3]);
 var home_dir = process.argv[4];
-var root_dir = process.env['COMX_SDK'];
+var root_dir = process.env['COMX_SDK'];
+var runningLog = "Y:\\nxcocadapp\\data\\Running.log";
 
 process.chdir(home_dir + 'js/');
 
 var websocket = require(root_dir + 'js/socket.io/websocket.common.js');
+var clientID = websocket.UUID();
 
 //websocket.start(port, debug);
 
@@ -43,15 +45,22 @@ process.on('uncaughtException', function (err) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Append your codes here please.
-websocket.on('Test', function(data){
+websocket.on('TestConnection', function(data){
 
-    data.parameters.ret = "hello,nodejs";
+    data.parameters.ret = "Callback of TestConnection";
 
     websocket.send(data);
 
-    websocket.Invoke('InvokeTest', {'res' : 'wwwwwwwwww'}, function(data){
+    websocket.Invoke('InvokeTestConnection', {'res' : 'Res Received from nxcocadapp'}, function(data){
 
-    });
+    });
+    
+    if(deamon.IsConnect())
+    {
+        deamon.Invoke('InvokeTestConnection', {'res' : 'Res Received from nxcocadapp'}, function(data){
+
+        });
+    }
 
 });
 
@@ -63,6 +72,26 @@ websocket.on('ConnectToDeamonMgr', function(data){
         function(flag){
             data.parameters = {'flag' : flag, 'ip_address' : deamon.GetCurrentAddress()};
             websocket.send(data);
+            //CoCADCreatePoint
+            deamon.on('CoCADCreatePoint', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var dcoordinateX = parameters.CoordinateX;
+                var dcoordinateY = parameters.CoordinateY;
+                var dcoordinateZ = parameters.CoordinateZ;
+                console.log('1234567');
+                if(sourceID == clientID)
+                {
+                    appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
+                    data.parameters.ret = "Received and ignored";
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
+                    data.parameters.ret = "Received and accepted";
+                }
+                deamon.send(data);
+            });
         }
     ); 
 });
@@ -94,4 +123,33 @@ websocket.on('SearchDeamonMgr', function(data){
         }
         websocket.send(data);
     });
-});
+});
+
+//CreatePoint
+websocket.on('CreatePoint', function(data){
+    var dcoordX = data.parameters.CoordinateX;
+    var dcoordY = data.parameters.CoordinateY;
+    var dcoordZ = data.parameters.CoordinateZ;
+    appendFileSync(runningLog, "CreatePoint:" + dcoordX + " " + dcoordY + " " + dcoordZ + "#");
+    if(deamon.IsConnect())
+    {
+        deamon.Invoke('OnActionFire', {'actionID' : 'CreatePoint', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)
+            {
+                appendFileSync(runningLog, data.parameters.ret);
+            });
+    }
+});
+
+
+//Util
+function sleep(n)
+{
+    var start=new Date().getTime();
+    while(true) if(new Date().getTime()-start>n) break;
+}
+
+function appendFileSync(fileName, data)
+{
+    var logString = require('fs').readFileSync(fileName);
+    require('fs').writeFileSync(fileName, logString + data + "\n");
+}

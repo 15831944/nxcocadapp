@@ -292,7 +292,7 @@ int NXCoCADTest::update_cb(NXOpen::BlockStyler::UIBlock* block)
             jCoordinate["CoordinateY"] = dCoordinate[1];
             jCoordinate["CoordinateZ"] = dCoordinate[2];
             Json::FastWriter json_writer;
-            string cmd = "websocket.Invoke('Test', ";
+            string cmd = "websocket.Invoke('CreatePoint', ";
             cmd += json_writer.write(jCoordinate);
             cmd += ", function(){});";
             RunScript(cmd.c_str());

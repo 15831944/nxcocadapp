@@ -5,25 +5,31 @@ var port = 30000;
 var runningLog = "Y:\\nxcocadapp\\data\\Running.log";
 
 websocket.ConnectTo(port, function(){
-    sleep(50);
-    websocket.Invoke('Test', {}, function(data){
+    sleep(500);
+    websocket.Invoke('TestConnection', {}, function(data){
 	//console.Clear();
 	// console.log(data.parameters.ret);
     // var deamonmgr_json_fpath = comx.sys.GetEnvironmentVariables('NXCOCADAPP') + 'data/NXCOCADAPP.log';
     // comx.ui.InformationBox("1\r\n2\r\n3");
-    // if(comx.sys.IsFileExist(runningLog))
-    // {
-        // fs.writeFileSync(runningLog, data.parameters.ret);
-    // }
+    if(fs.existsSync(runningLog))
+    {
+        fs.writeFileSync(runningLog, data.parameters.ret + "\n");
+    }
+    else
+    {
+        fs.writeFileSync(runningLog, data.parameters.ret + "\n");
+    }
     });
 });
 
-websocket.on('InvokeTest', function(data){
+websocket.on('InvokeTestConnection', function(data){
     // console.log('Websocket服务器返回的结果是' + data.parameters.res);
-    var logString = fs.readFileSync(runningLog);
-    // comx.ui.InformationBox(logString);
+    // sleep(500)
+    // comx.ui.InformationBox(data.parameters.res);
     // logString += "\n"+'Websocket服务器返回的结果是' + data.parameters.res;
-    fs.writeFileSync(runningLog, logString + "4\n");
+    // sleep(100);
+    
+    appendFileSync(runningLog, data.parameters.res);
     //websocket.Dispose();
     //process.exit();
 });
@@ -52,4 +58,10 @@ function sleep(n)
 {
     var start=new Date().getTime();
     while(true) if(new Date().getTime()-start>n) break;
+}
+
+function appendFileSync(fileName, data)
+{
+    var logString = fs.readFileSync(fileName);
+    fs.writeFileSync(fileName, logString + data + "\n");
 }
