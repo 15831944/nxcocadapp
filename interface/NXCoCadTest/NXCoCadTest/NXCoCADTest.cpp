@@ -36,6 +36,46 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "NXCoCADTest.hpp"
+#include "NXCoCADTest.hpp"
+#include <uf.h>
+#include <NXOpen/Session.hxx>
+#include <uf_exit.h>
+#include <NXOpen/UI.hxx>
+#include <NXOpen/NXMessageBox.hxx>
+#include <fstream> 
+#include <windows.h>
+#include <cstring>
+#include <cstdlib>  
+#include <cstdio>
+#include <uf_defs.h>
+#include <uf_ui.h>
+#include <NXOpen/NXException.hxx>
+#include <NXOpen/Session.hxx>
+#include <NXOpen/BasePart.hxx>
+#include <NXOpen/Builder.hxx>
+#include <NXOpen/Expression.hxx>
+#include <NXOpen/ExpressionCollection.hxx>
+#include <NXOpen/Features_BaseFeatureCollection.hxx>
+#include <NXOpen/Features_PointFeatureBuilder.hxx>
+#include <NXOpen/NXObject.hxx>
+#include <NXOpen/Part.hxx>
+#include <NXOpen/PartCollection.hxx>
+#include <NXOpen/Point.hxx>
+#include <NXOpen/PointCollection.hxx>
+#include <NXOpen/Preferences_PartModeling.hxx>
+#include <NXOpen/Preferences_PartPreferences.hxx>
+#include <NXOpen/Scalar.hxx>
+#include <NXOpen/ScalarCollection.hxx>
+#include <NXOpen/Session.hxx>
+#include <NXOpen/SmartObject.hxx>
+#include <NXOpen/Unit.hxx>
+#include <NXOpen/UnitCollection.hxx>
+#include <NXOpen/Update.hxx>
+
+using namespace NXOpen;
+using namespace NXOpen::BlockStyler;
+using namespace std;
+
 using namespace NXOpen;
 using namespace NXOpen::BlockStyler;
 
@@ -46,6 +86,14 @@ Session *(NXCoCADTest::theSession) = NULL;
 UI *(NXCoCADTest::theUI) = NULL;
 static Features::PointFeature * CreatePointFeature( double coord[3] );
 static Point * CreatePoint( double coord[3] );
+
+
+//zuyuanzhang code
+UI *myUI;// = UI::GetUI();
+NXMessageBox *message;// = myUI->NXMessageBox();
+static int taskNum = 1;
+void createPoint(double x,double y,double z);
+char task[100];
 //------------------------------------------------------------------------------
 // Constructor for NX Styler class
 //------------------------------------------------------------------------------
@@ -83,6 +131,33 @@ NXCoCADTest::~NXCoCADTest()
         theDialog = NULL;
     }
 }
+
+
+//读写文件加锁
+#define NUM_THREADS 5 //线程数
+DWORD WINAPI ThreadProc(LPVOID lpParameter);
+class lockBase{  
+protected:  
+
+	friend class singleStance;  
+	CRITICAL_SECTION cs;  
+
+public :   
+	lockBase(){  
+		::InitializeCriticalSection(&cs);  
+	}  
+	void lock(){  
+		::EnterCriticalSection(&cs);  
+	}  
+	void unlock(){  
+		::LeaveCriticalSection(&cs);  
+	}  
+	~lockBase(){  
+		::DeleteCriticalSection(&cs);  
+	}  
+
+}; 
+
 //------------------------------- DIALOG LAUNCHING ---------------------------------
 //
 //    Before invoking this application one needs to open any part/empty part in NX
@@ -107,9 +182,22 @@ NXCoCADTest::~NXCoCADTest()
 extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 {
     NXCoCADTest *theNXCoCADTest = NULL;
+
+	char buffer[255];
+	int temp;
+	int i = 0;
+	DWORD test = 0;    ///< 0表示第一个子线程
+	HANDLE handle;
+	DWORD numThreadId = 0;
+	myUI = UI::GetUI();
+	message = myUI->NXMessageBox();
+
     try
     {
         theNXCoCADTest = new NXCoCADTest();
+
+		handle = CreateThread(NULL, 0, ThreadProc, (LPVOID)&test, 0, &numThreadId);
+
         // The following method shows the dialog immediately
         theNXCoCADTest->Show();
     }
@@ -118,6 +206,13 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
         //---- Enter your exception handling code here -----
         NXCoCADTest::theUI->NXMessageBox()->Show("Block Styler", NXOpen::NXMessageBox::DialogTypeError, ex.what());
     }
+
+	if (handle)
+	{
+		message->Show("提示",NXMessageBox::DialogTypeQuestion,"delete subThread");
+		CloseHandle(handle);
+	}
+
     if(theNXCoCADTest != NULL)
     {
         delete theNXCoCADTest;
@@ -417,4 +512,89 @@ bool Terminate(void)
 {
     Dispose();
     return true;
+}
+
+
+
+//创建线程
+DWORD WINAPI ThreadProc(LPVOID lpParameter)
+{
+	int temp = 0;
+	char buffer[256];
+	//taskNum = 1;
+	int num = 1;
+	int currentNum = 0;
+	int strLength = 0;
+	UI *myUI = UI::GetUI();
+	NXMessageBox *message = myUI->NXMessageBox();
+	Sleep(2000);
+	while(1)
+	{
+		currentNum = 0;
+		lockBase* lockbase = new lockBase();  
+		ifstream in("Y:\\nxcocadapp\\data\\Running.log"); 
+		if (! in.is_open())  
+		{ 
+			message->Show("提示",NXMessageBox::DialogTypeQuestion,"failed");
+		}  
+		double x = 0,y = 0,z = 0;
+		while (!in.eof() )  
+		{  
+
+			in.getline (buffer,100);
+			strLength = strlen(buffer);
+			if (strLength > 0 && buffer[strLength - 1] == '#')
+			{
+				currentNum ++;
+				char nn[12] = "";
+				sprintf(nn,"%d",currentNum);
+				x += 10;
+				y += 10;
+				if (currentNum == taskNum)
+				{
+					lockbase->lock();  
+					sprintf(task,"%s",buffer);
+					lockbase->unlock(); 
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					sprintf(nn,"%d",taskNum);
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					createPoint(x,y,z);
+					taskNum ++;
+					break;
+				}
+			}
+		}
+		in.close();
+		delete(lockbase);
+
+		num ++;
+		Sleep(2000);
+	}
+	return 0;
+}
+
+//创建点
+void createPoint(double x,double y,double z)
+{
+	Session *theSession = Session::GetSession();
+	Part *workPart(theSession->Parts()->Work());
+	Part *displayPart(theSession->Parts()->Display());
+	// ----------------------------------------------
+	//   Menu: Insert->Datum/Point->Point...
+	// ----------------------------------------------
+
+	Point3d p3d;
+	Point* pp;
+	Features::Feature *nullFeatures_Feature(NULL);
+	Features::PointFeatureBuilder* pointFeatureBuilder1;
+	NXObject *nXObject1;
+	p3d=Point3d(x,y,z);
+	pp=workPart->Points()->CreatePoint(p3d);
+	//pp->SetName("point1");
+	pp->SetVisibility(SmartObject::VisibilityOptionVisible);
+	pointFeatureBuilder1=workPart->BaseFeatures()->CreatePointFeatureBuilder(nullFeatures_Feature);
+	pointFeatureBuilder1->SetPoint(pp);
+	nXObject1 = pointFeatureBuilder1->Commit();
+	pointFeatureBuilder1->Destroy();
+
 }
