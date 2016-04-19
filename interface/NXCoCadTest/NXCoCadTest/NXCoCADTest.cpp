@@ -36,48 +36,11 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "NXCoCADTest.hpp"
-#include "NXCoCADTest.hpp"
-#include <uf.h>
-#include <NXOpen/Session.hxx>
-#include <uf_exit.h>
-#include <NXOpen/UI.hxx>
-#include <NXOpen/NXMessageBox.hxx>
-#include <fstream> 
-#include <windows.h>
-#include <cstring>
-#include <cstdlib>  
-#include <cstdio>
-#include <uf_defs.h>
-#include <uf_ui.h>
-#include <NXOpen/NXException.hxx>
-#include <NXOpen/Session.hxx>
-#include <NXOpen/BasePart.hxx>
-#include <NXOpen/Builder.hxx>
-#include <NXOpen/Expression.hxx>
-#include <NXOpen/ExpressionCollection.hxx>
-#include <NXOpen/Features_BaseFeatureCollection.hxx>
-#include <NXOpen/Features_PointFeatureBuilder.hxx>
-#include <NXOpen/NXObject.hxx>
-#include <NXOpen/Part.hxx>
-#include <NXOpen/PartCollection.hxx>
-#include <NXOpen/Point.hxx>
-#include <NXOpen/PointCollection.hxx>
-#include <NXOpen/Preferences_PartModeling.hxx>
-#include <NXOpen/Preferences_PartPreferences.hxx>
-#include <NXOpen/Scalar.hxx>
-#include <NXOpen/ScalarCollection.hxx>
-#include <NXOpen/Session.hxx>
-#include <NXOpen/SmartObject.hxx>
-#include <NXOpen/Unit.hxx>
-#include <NXOpen/UnitCollection.hxx>
-#include <NXOpen/Update.hxx>
 
 using namespace NXOpen;
 using namespace NXOpen::BlockStyler;
 using namespace std;
 
-using namespace NXOpen;
-using namespace NXOpen::BlockStyler;
 
 //------------------------------------------------------------------------------
 // Initialize static variables
@@ -133,8 +96,8 @@ NXCoCADTest::~NXCoCADTest()
 }
 
 
-//读写文件加锁
-#define NUM_THREADS 5 //线程数
+//Add lock while reading and writing
+#define NUM_THREADS 5 //number of thread
 DWORD WINAPI ThreadProc(LPVOID lpParameter);
 class lockBase{  
 protected:  
@@ -186,7 +149,7 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 	char buffer[255];
 	int temp;
 	int i = 0;
-	DWORD test = 0;    ///< 0表示第一个子线程
+	DWORD test = 0;    ///< 0 represents the first thread
 	HANDLE handle;
 	DWORD numThreadId = 0;
 	myUI = UI::GetUI();
@@ -516,7 +479,7 @@ bool Terminate(void)
 
 
 
-//创建线程
+//Create Thread
 DWORD WINAPI ThreadProc(LPVOID lpParameter)
 {
 	int temp = 0;
@@ -573,7 +536,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParameter)
 	return 0;
 }
 
-//创建点
+//Create Point
 void createPoint(double x,double y,double z)
 {
 	Session *theSession = Session::GetSession();
