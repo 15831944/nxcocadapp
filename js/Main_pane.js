@@ -1,7 +1,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Import external javascript module by reqire function.
 
-var websocket = require('socket.io/comx.websocket.js');
+var websocket = require('socket.io/comx.websocket.js');
+var runningLog = "Y:\\nxcocadapp\\data\\Running.log";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //System Pre-define functions 
@@ -55,7 +56,12 @@ function OnInitializeData()
 {
     //websocket.Startup(websocket.IsDebug()/*debug_mode*/);
     //websocket.Startup(true);
-    websocket.StartupDeamon(port, websocket.IsDebug());
+    websocket.StartupDeamon(port, websocket.IsDebug());
+    //Create log file
+    comx.sys.CreateFileHandler('runningLog', runningLog);
+    //comx.file.runningLog = Date() + '\n';
+    comx.file.runningLog = '';
+    comx.sys.CloseFileHandler('runningLog');
 }
 
 function OnInitializePost()
@@ -72,7 +78,8 @@ function OnCloseForm()
  
     comx.sys.CreateFileHandler('deamonmgr_json', deamonmgr_json_fpath);
     comx.file.deamonmgr_json = JSON.stringify({'ip' : binding.ip});
-    comx.sys.CloseFileHandler('deamon_json');
+    comx.sys.CloseFileHandler('deamon_json');
+    comx.sys.RemoveFile(runningLog);
     websocket.Stop();
 }
 

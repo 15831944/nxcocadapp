@@ -82,12 +82,12 @@ websocket.on('ConnectToDeamonMgr', function(data){
                 console.log('1234567');
                 if(sourceID == clientID)
                 {
-                    appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
+                    //appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
                     data.parameters.ret = "Received and ignored";
                 }
                 else
                 {
-                    appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
+                    //appendFileSync(runningLog, "Received CreatePoint action from Server: sourceID: " + sourceID + " parameters: " + dcoordinateX + " " + dcoordinateY + " " + dcoordinateZ);
                     data.parameters.ret = "Received and accepted";
                 }
                 deamon.send(data);
@@ -135,7 +135,7 @@ websocket.on('CreatePoint', function(data){
     {
         deamon.Invoke('OnActionFire', {'actionID' : 'CreatePoint', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)
             {
-                appendFileSync(runningLog, data.parameters.ret);
+                //appendFileSync(runningLog, data.parameters.ret);
             });
     }
 });
