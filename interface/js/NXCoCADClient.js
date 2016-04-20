@@ -13,12 +13,12 @@ websocket.ConnectTo(port, function(){
     // comx.ui.InformationBox("1\r\n2\r\n3");
     if(fs.existsSync(runningLog))
     {
-        //appendFileSync(runningLog, data.parameters.ret);
+        appendFileSync(runningLog, data.parameters.ret);
     }
     else
     {
-        //fs.writeFileSync(runningLog, data.parameters.ret + " Create Log File.\n");
-        //appendFileSync(runningLog, Data());
+        fs.writeFileSync(runningLog, data.parameters.ret + " Create Log File.\n");
+        appendFileSync(runningLog, Data());
     }
     });
 });
@@ -30,7 +30,7 @@ websocket.on('InvokeTestConnection', function(data){
     // logString += "\n"+'Websocket服务器返回的结果是' + data.parameters.res;
     // sleep(100);
     
-    //appendFileSync(runningLog, data.parameters.res);
+    appendFileSync(runningLog, data.parameters.res);
     //websocket.Dispose();
     //process.exit();
 });

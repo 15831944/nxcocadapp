@@ -2,7 +2,8 @@
 // Import external javascript module by reqire function.
 
 var websocket = require('socket.io/comx.websocket.js');
-var runningLog = "Y:\\nxcocadapp\\data\\Running.log";
+var runningLog = "Y:\\nxcocadapp\\data\\Running.log";//log file
+var messageQueue = "Y:\\nxcocadapp\\data\\MessageQueue.log";//message queue
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //System Pre-define functions 
@@ -59,9 +60,14 @@ function OnInitializeData()
     websocket.StartupDeamon(port, websocket.IsDebug());
     //Create log file
     comx.sys.CreateFileHandler('runningLog', runningLog);
-    //comx.file.runningLog = Date() + '\n';
-    comx.file.runningLog = '';
-    comx.sys.CloseFileHandler('runningLog');
+    comx.file.runningLog = Date() + "\n";
+    //comx.file.runningLog = '';
+    comx.sys.CloseFileHandler('runningLog');
+    //Create message queue
+    comx.sys.CreateFileHandler('messageQueue', messageQueue);
+    comx.file.messageQueue = "";
+    comx.sys.CloseFileHandler('messageQueue');
+    //comx.ui.InformationBox("initialize finished");
 }
 
 function OnInitializePost()
@@ -79,7 +85,8 @@ function OnCloseForm()
     comx.sys.CreateFileHandler('deamonmgr_json', deamonmgr_json_fpath);
     comx.file.deamonmgr_json = JSON.stringify({'ip' : binding.ip});
     comx.sys.CloseFileHandler('deamon_json');
-    comx.sys.RemoveFile(runningLog);
+    //comx.sys.RemoveFile(runningLog);
+    //comx.sys.RemoveFile(messageQueue);
     websocket.Stop();
 }
 

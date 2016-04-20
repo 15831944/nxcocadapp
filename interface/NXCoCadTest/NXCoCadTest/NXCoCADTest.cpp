@@ -495,7 +495,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParameter)
 	{
 		currentNum = 0;
 		lockBase* lockbase = new lockBase();  
-		ifstream in("Y:\\nxcocadapp\\data\\Running.log"); 
+		ifstream in("Y:\\nxcocadapp\\data\\MessageQueue.log"); 
 		if (! in.is_open())  
 		{ 
 			message->Show("ÌבÊ¾",NXMessageBox::DialogTypeQuestion,"failed");
