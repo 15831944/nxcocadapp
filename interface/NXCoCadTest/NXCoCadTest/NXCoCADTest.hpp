@@ -63,7 +63,12 @@ private:
 
 DllExport bool Initialize(void);
 DllExport bool Terminate(void);
+void CALLBACK TimerProc(HWND hwnd, UINT message, UINT idTimer, DWORD dwTime);
+
 
 double dCoordinate[3];
+UINT_PTR nTimerID;
+bool bTimerEnable;
+UINT nSampleTime;
 
 #endif //NXCOCADTEST_H_INCLUDED

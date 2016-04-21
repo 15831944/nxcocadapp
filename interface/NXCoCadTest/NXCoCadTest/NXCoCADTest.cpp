@@ -145,7 +145,9 @@ public :
 extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 {
     NXCoCADTest *theNXCoCADTest = NULL;
-
+    nTimerID = 0;
+    bTimerEnable = false;
+    nSampleTime = 500;
 	char buffer[255];
 	int temp;
 	int i = 0;
@@ -158,11 +160,14 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
     try
     {
         theNXCoCADTest = new NXCoCADTest();
-
 		handle = CreateThread(NULL, 0, ThreadProc, (LPVOID)&test, 0, &numThreadId);
 
         // The following method shows the dialog immediately
         theNXCoCADTest->Show();
+        if(bTimerEnable)
+        {
+            KillTimer(NULL, nTimerID);
+        }
     }
     catch(exception& ex)
     {
@@ -170,16 +175,23 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
         NXCoCADTest::theUI->NXMessageBox()->Show("Block Styler", NXOpen::NXMessageBox::DialogTypeError, ex.what());
     }
 
+
 	if (handle)
 	{
 		message->Show("ÌבÊ¾",NXMessageBox::DialogTypeQuestion,"delete subThread");
 		CloseHandle(handle);
 	}
 
+
     if(theNXCoCADTest != NULL)
     {
         delete theNXCoCADTest;
         theNXCoCADTest = NULL;
+        if(bTimerEnable)
+        {
+            KillTimer(NULL, nTimerID);
+        }
+        Terminate();
         //Terminate();
     }
 }
@@ -217,7 +229,7 @@ extern "C" DllExport void ufusr_cleanup(void)
     try
     {
         //---- Enter your callback code here -----
-        Terminate();
+        //Terminate();
     }
     catch(exception& ex)
     {
@@ -460,6 +472,16 @@ bool Initialize(void)
     ExecuteScriptFile("js/NXCoCADClient.js");
 
     Sleep(500);
+    //Activated Timer
+    if(!bTimerEnable)
+    {
+        bTimerEnable = true;
+        nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
+    }
+    else
+    {
+        MessageBox(NULL, "SetTimer Failure!", "Error!", 0);
+    }
 
    /* ret = RunScript("IsServiceConnected();");
     if (ret == "false")
@@ -560,4 +582,11 @@ void createPoint(double x,double y,double z)
 	nXObject1 = pointFeatureBuilder1->Commit();
 	pointFeatureBuilder1->Destroy();
 
+}
+
+void CALLBACK TimerProc(HWND hwnd, UINT message, UINT idTimer, DWORD dwTime)
+{
+    KillTimer(NULL, nTimerID);
+    MessageBox(NULL, "Timer!", "", 0);
+    nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
 }
