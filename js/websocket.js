@@ -93,6 +93,48 @@ websocket.on('ConnectToDeamonMgr', function(data){
                 }
                 deamon.send(data);
             });
+            //CoCADCreateRect
+            deamon.on('CoCADCreateRect', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var dleftX = parameters.leftX;
+                var dleftY = parameters.leftY;
+                var dleftZ = parameters.leftZ;
+                var drightX = parameters.rightX;
+                var drightY = parameters.rightY;
+                var drightZ = parameters.rightZ;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateRect and ignored";
+                    appendFileSync(messageQueue, "CreateRect:" + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " parameters: " + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateRect and accepted";
+                    appendFileSync(messageQueue, "CreateRect:" + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ + "#");
+                }
+                deamon.send(data);
+            });
+            //CoCADCreateSketch
+            deamon.on('CoCADCreateSketch', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received CreateSketch action from Server: sourceID: " + sourceID + " (ignored)parameters: null");
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketch and ignored";
+                    appendFileSync(messageQueue, "CreateSketch:#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received CreateSketch action from Server: sourceID: " + sourceID + " parameters: null");
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketch and accepted";
+                    appendFileSync(messageQueue, "CreateSketch:#");
+                }
+                deamon.send(data);
+            });
         }
     ); 
 });
