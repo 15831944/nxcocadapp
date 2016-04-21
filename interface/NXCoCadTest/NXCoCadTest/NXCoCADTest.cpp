@@ -36,8 +36,11 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "NXCoCADTest.hpp"
+
 using namespace NXOpen;
 using namespace NXOpen::BlockStyler;
+using namespace std;
+
 
 //------------------------------------------------------------------------------
 // Initialize static variables
@@ -46,6 +49,14 @@ Session *(NXCoCADTest::theSession) = NULL;
 UI *(NXCoCADTest::theUI) = NULL;
 static Features::PointFeature * CreatePointFeature( double coord[3] );
 static Point * CreatePoint( double coord[3] );
+
+
+//zuyuanzhang code
+UI *myUI;// = UI::GetUI();
+NXMessageBox *message;// = myUI->NXMessageBox();
+static int taskNum = 1;
+void createPoint(double x,double y,double z);
+char task[100];
 //------------------------------------------------------------------------------
 // Constructor for NX Styler class
 //------------------------------------------------------------------------------
@@ -83,6 +94,33 @@ NXCoCADTest::~NXCoCADTest()
         theDialog = NULL;
     }
 }
+
+
+//Add lock while reading and writing
+#define NUM_THREADS 5 //number of thread
+DWORD WINAPI ThreadProc(LPVOID lpParameter);
+class lockBase{  
+protected:  
+
+	friend class singleStance;  
+	CRITICAL_SECTION cs;  
+
+public :   
+	lockBase(){  
+		::InitializeCriticalSection(&cs);  
+	}  
+	void lock(){  
+		::EnterCriticalSection(&cs);  
+	}  
+	void unlock(){  
+		::LeaveCriticalSection(&cs);  
+	}  
+	~lockBase(){  
+		::DeleteCriticalSection(&cs);  
+	}  
+
+}; 
+
 //------------------------------- DIALOG LAUNCHING ---------------------------------
 //
 //    Before invoking this application one needs to open any part/empty part in NX
@@ -107,21 +145,53 @@ NXCoCADTest::~NXCoCADTest()
 extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 {
     NXCoCADTest *theNXCoCADTest = NULL;
+    nTimerID = 0;
+    bTimerEnable = false;
+    nSampleTime = 500;
+	char buffer[255];
+	int temp;
+	int i = 0;
+	DWORD test = 0;    ///< 0 represents the first thread
+	HANDLE handle;
+	DWORD numThreadId = 0;
+	myUI = UI::GetUI();
+	message = myUI->NXMessageBox();
+
     try
     {
         theNXCoCADTest = new NXCoCADTest();
+		handle = CreateThread(NULL, 0, ThreadProc, (LPVOID)&test, 0, &numThreadId);
+
         // The following method shows the dialog immediately
         theNXCoCADTest->Show();
+        if(bTimerEnable)
+        {
+            KillTimer(NULL, nTimerID);
+        }
     }
     catch(exception& ex)
     {
         //---- Enter your exception handling code here -----
         NXCoCADTest::theUI->NXMessageBox()->Show("Block Styler", NXOpen::NXMessageBox::DialogTypeError, ex.what());
     }
+
+
+	if (handle)
+	{
+		message->Show("提示",NXMessageBox::DialogTypeQuestion,"delete subThread");
+		CloseHandle(handle);
+	}
+
+
     if(theNXCoCADTest != NULL)
     {
         delete theNXCoCADTest;
         theNXCoCADTest = NULL;
+        if(bTimerEnable)
+        {
+            KillTimer(NULL, nTimerID);
+        }
+        Terminate();
         //Terminate();
     }
 }
@@ -159,7 +229,7 @@ extern "C" DllExport void ufusr_cleanup(void)
     try
     {
         //---- Enter your callback code here -----
-        Terminate();
+        //Terminate();
     }
     catch(exception& ex)
     {
@@ -402,6 +472,16 @@ bool Initialize(void)
     ExecuteScriptFile("js/NXCoCADClient.js");
 
     Sleep(500);
+    //Activated Timer
+    if(!bTimerEnable)
+    {
+        bTimerEnable = true;
+        nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
+    }
+    else
+    {
+        MessageBox(NULL, "SetTimer Failure!", "Error!", 0);
+    }
 
    /* ret = RunScript("IsServiceConnected();");
     if (ret == "false")
@@ -417,4 +497,96 @@ bool Terminate(void)
 {
     Dispose();
     return true;
+}
+
+
+
+//Create Thread
+DWORD WINAPI ThreadProc(LPVOID lpParameter)
+{
+	int temp = 0;
+	char buffer[256];
+	//taskNum = 1;
+	int num = 1;
+	int currentNum = 0;
+	int strLength = 0;
+	UI *myUI = UI::GetUI();
+	NXMessageBox *message = myUI->NXMessageBox();
+	Sleep(2000);
+	while(1)
+	{
+		currentNum = 0;
+		lockBase* lockbase = new lockBase();  
+		ifstream in("Y:\\nxcocadapp\\data\\MessageQueue.log"); 
+		if (! in.is_open())  
+		{ 
+			message->Show("提示",NXMessageBox::DialogTypeQuestion,"failed");
+		}  
+		double x = 0,y = 0,z = 0;
+		while (!in.eof() )  
+		{  
+
+			in.getline (buffer,100);
+			strLength = strlen(buffer);
+			if (strLength > 0 && buffer[strLength - 1] == '#')
+			{
+				currentNum ++;
+				char nn[12] = "";
+				sprintf(nn,"%d",currentNum);
+				x += 10;
+				y += 10;
+				if (currentNum == taskNum)
+				{
+					lockbase->lock();  
+					sprintf(task,"%s",buffer);
+					lockbase->unlock(); 
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					sprintf(nn,"%d",taskNum);
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					createPoint(x,y,z);
+					taskNum ++;
+					break;
+				}
+			}
+		}
+		in.close();
+		delete(lockbase);
+
+		num ++;
+		Sleep(2000);
+	}
+	return 0;
+}
+
+//Create Point
+void createPoint(double x,double y,double z)
+{
+	Session *theSession = Session::GetSession();
+	Part *workPart(theSession->Parts()->Work());
+	Part *displayPart(theSession->Parts()->Display());
+	// ----------------------------------------------
+	//   Menu: Insert->Datum/Point->Point...
+	// ----------------------------------------------
+
+	Point3d p3d;
+	Point* pp;
+	Features::Feature *nullFeatures_Feature(NULL);
+	Features::PointFeatureBuilder* pointFeatureBuilder1;
+	NXObject *nXObject1;
+	p3d=Point3d(x,y,z);
+	pp=workPart->Points()->CreatePoint(p3d);
+	//pp->SetName("point1");
+	pp->SetVisibility(SmartObject::VisibilityOptionVisible);
+	pointFeatureBuilder1=workPart->BaseFeatures()->CreatePointFeatureBuilder(nullFeatures_Feature);
+	pointFeatureBuilder1->SetPoint(pp);
+	nXObject1 = pointFeatureBuilder1->Commit();
+	pointFeatureBuilder1->Destroy();
+
+}
+
+void CALLBACK TimerProc(HWND hwnd, UINT message, UINT idTimer, DWORD dwTime)
+{
+    KillTimer(NULL, nTimerID);
+    MessageBox(NULL, "Timer!", "", 0);
+    nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
 }

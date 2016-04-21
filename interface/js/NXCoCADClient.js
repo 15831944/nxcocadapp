@@ -13,11 +13,12 @@ websocket.ConnectTo(port, function(){
     // comx.ui.InformationBox("1\r\n2\r\n3");
     if(fs.existsSync(runningLog))
     {
-        fs.writeFileSync(runningLog, data.parameters.ret + "\n");
+        appendFileSync(runningLog, data.parameters.ret);
     }
     else
     {
-        fs.writeFileSync(runningLog, data.parameters.ret + "\n");
+        fs.writeFileSync(runningLog, data.parameters.ret + " Create Log File.\n");
+        appendFileSync(runningLog, Data());
     }
     });
 });

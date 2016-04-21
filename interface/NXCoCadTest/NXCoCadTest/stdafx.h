@@ -47,9 +47,16 @@ using namespace KMAS::type;
 // TODO: reference additional headers your program requires here
 #include <uf_defs.h>
 #include <uf_ui_types.h>
+#include <uf.h>
+#include <uf_exit.h>
+#include <uf_ui.h>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <vector>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <NXOpen/Session.hxx>
 #include <NXOpen/UI.hxx>
 #include <NXOpen/NXMessageBox.hxx>
@@ -70,3 +77,16 @@ using namespace KMAS::type;
 #include <NXOpen/Features_BaseFeatureCollection.hxx>
 #include <NXOpen/Features_PointFeatureBuilder.hxx>
 #include <NXOpen/Features_PointFeature.hxx>
+
+#include <NXOpen/BasePart.hxx>
+#include <NXOpen/Builder.hxx>
+#include <NXOpen/Expression.hxx>
+#include <NXOpen/ExpressionCollection.hxx>
+#include <NXOpen/Preferences_PartModeling.hxx>
+#include <NXOpen/Preferences_PartPreferences.hxx>
+#include <NXOpen/Scalar.hxx>
+#include <NXOpen/ScalarCollection.hxx>
+#include <NXOpen/SmartObject.hxx>
+#include <NXOpen/Unit.hxx>
+#include <NXOpen/UnitCollection.hxx>
+#include <NXOpen/Update.hxx>
