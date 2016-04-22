@@ -97,23 +97,23 @@ websocket.on('ConnectToDeamonMgr', function(data){
             deamon.on('CoCADCreateRect', function(data){
                 var sourceID = data.parameters.sourceID;
                 var parameters = data.parameters.parameters;
-                var dleftX = parameters.leftX;
-                var dleftY = parameters.leftY;
-                var dleftZ = parameters.leftZ;
-                var drightX = parameters.rightX;
-                var drightY = parameters.rightY;
-                var drightZ = parameters.rightZ;
+                var dpara1 = parameters.para1;
+                var dpara2 = parameters.para2;
+                var dpara3 = parameters.para3;
+                var dpara4 = parameters.para4;
+                var dpara5 = parameters.para5;
+                var nOverloadType = parameters.overloadType;
                 if(sourceID == clientID)//Same source doesn't need to accept.
                 {
-                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ);
+                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dpara1 + " " + dpara2 + " " + dpara3 + " " + dpara4 + " " + dpara5 + " " + nOverloadType);
                     data.parameters.ret = "Client id: " + clientID + "has received action: CreateRect and ignored";
-                    appendFileSync(messageQueue, "CreateRect:" + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ + "#");
+                    appendFileSync(messageQueue, "CreateRect:" + dpara1 + " " + dpara2 + " " + dpara3 + " " + dpara4 + " " + dpara5 + " " + nOverloadType + "#");
                 }
                 else
                 {
-                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " parameters: " + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ);
+                    appendFileSync(runningLog, "Received CreateRect action from Server: sourceID: " + sourceID + " parameters: " + dpara1 + " " + dpara2 + " " + dpara3 + " " + dpara4 + " " + dpara5 + " " + nOverloadType);
                     data.parameters.ret = "Client id: " + clientID + "has received action: CreateRect and accepted";
-                    appendFileSync(messageQueue, "CreateRect:" + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ + "#");
+                    appendFileSync(messageQueue, "CreateRect:" + dpara1 + " " + dpara2 + " " + dpara3 + " " + dpara4 + " " + dpara5 + " " + nOverloadType + "#");
                 }
                 deamon.send(data);
             });
@@ -132,6 +132,113 @@ websocket.on('ConnectToDeamonMgr', function(data){
                     appendFileSync(runningLog, "Received CreateSketch action from Server: sourceID: " + sourceID + " parameters: null");
                     data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketch and accepted";
                     appendFileSync(messageQueue, "CreateSketch:#");
+                }
+                deamon.send(data);
+            });
+            //CoCADExtrude
+            deamon.on('CoCADExtrude', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var dHeight = parameters.height;
+                var nLineNum = parameters.lineNum;
+                var nSketchNum = parameters.sketchNum;
+                var nSketchID = parameters.sketchID;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: Extrude and ignored";
+                    appendFileSync(messageQueue, "Extrude:" + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " parameters: " + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: Extrude and accepted";
+                    appendFileSync(messageQueue, "Extrude:" + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID + "#");
+                }
+                deamon.send(data);
+            });
+            //CoCADCreatePlane
+            deamon.on('CoCADCreatePlane', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var dX = parameters.x;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received CreatePlane action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dX);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreatePlane and ignored";
+                    appendFileSync(messageQueue, "CreatePlane:" + dX + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received CreatePlane action from Server: sourceID: " + sourceID + " parameters: " + dX);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreatePlane and accepted";
+                    appendFileSync(messageQueue, "CreatePlane:" + dX + "#");
+                }
+                deamon.send(data);
+            });
+            //CoCADDrawCircle
+            deamon.on('CoCADDrawCircle', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var dX = parameters.x;
+                var dY = parameters.y;
+                var dZ = parameters.z;
+                var dR = parameters.r;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received DrawCircle action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dX + " " + dY + " " + dZ + " " + dR);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: DrawCircle and ignored";
+                    appendFileSync(messageQueue, "DrawCircle:" + dX + " " + dY + " " + dZ + " " + dR + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received DrawCircle action from Server: sourceID: " + sourceID + " parameters: " + dX + " " + dY + " " + dZ + " " + dR);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: DrawCircle and accepted";
+                    appendFileSync(messageQueue, "DrawCircle:" + dX + " " + dY + " " + dZ + " " + dR + "#");
+                }
+                deamon.send(data);
+            });
+            //CoCADCreateSketchOnExtrude
+            deamon.on('CoCADCreateSketchOnExtrude', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var nExtrudeNum = parameters.extrudeNum;
+                var str1 = parameters.str1;
+                var str2 = parameters.str2;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + nExtrudeNum + " " + str1 + " " + str2);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketchOnExtrude and ignored";
+                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + nExtrudeNum + " " + str1 + " " + str2 + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " parameters: " + nExtrudeNum + " " + str1 + " " + str2);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketchOnExtrude and accepted";
+                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + nExtrudeNum + " " + str1 + " " + str2 + "#");
+                }
+                deamon.send(data);
+            });
+            //CoCADReverseExtrude
+            deamon.on('CoCADReverseExtrude', function(data){
+                var sourceID = data.parameters.sourceID;
+                var parameters = data.parameters.parameters;
+                var strSketchID = parameters.sketchID;
+                var strSketchNum = parameters.sketchNum;
+                var strExtrudeLine = parameters.extrudeLine;
+                var strTargetExtrude = parameters.targetExtrude;
+                var dLength = parameters.length;
+                if(sourceID == clientID)//Same source doesn't need to accept.
+                {
+                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: ReverseExtrude and ignored";
+                    appendFileSync(messageQueue, "ReverseExtrude:" + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength + "#");
+                }
+                else
+                {
+                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " parameters: " + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength);
+                    data.parameters.ret = "Client id: " + clientID + "has received action: ReverseExtrude and accepted";
+                    appendFileSync(messageQueue, "ReverseExtrude:" + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength + "#");
                 }
                 deamon.send(data);
             });
@@ -185,13 +292,13 @@ websocket.on('CreatePoint', function(data){
 
 //CreateRect
 websocket.on('CreateRect', function(data){
-    var dleftX = data.parameters.leftX;
-    var dleftY = data.parameters.leftY;
-    var dleftZ = data.parameters.leftZ;
-    var drightX = data.parameters.rightX;
-    var drightY = data.parameters.rightY;
-    var drightZ = data.parameters.rightZ;
-    appendFileSync(runningLog, "Action detected: CreateRect:" + dleftX + " " + dleftY + " " + dleftZ + " " + drightX + " " + drightY + " " + drightZ);
+    var dpara1 = data.parameters.para1;
+    var dpara2 = data.parameters.para2;
+    var dpara3 = data.parameters.para3;
+    var dpara4 = data.parameters.para4;
+    var dpara5 = data.parameters.para5;
+    var nOverloadType = data.parameters.overloadType;
+    appendFileSync(runningLog, "Action detected: CreateRect:" + dpara1 + " " + dpara2 + " " + dpara3 + " " + dpara4 + " " + dpara5 + " " + nOverloadType);
     if(deamon.IsConnect())
     {
         deamon.Invoke('OnActionFire', {'actionID' : 'CreateRect', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)

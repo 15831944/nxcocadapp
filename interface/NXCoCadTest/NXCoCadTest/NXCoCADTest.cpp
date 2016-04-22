@@ -187,10 +187,10 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
     {
         delete theNXCoCADTest;
         theNXCoCADTest = NULL;
-        if(bTimerEnable)
-        {
-            KillTimer(NULL, nTimerID);
-        }
+        //if(bTimerEnable)
+        //{
+        //    KillTimer(NULL, nTimerID);
+        //}
         Terminate();
         //Terminate();
     }
@@ -357,16 +357,83 @@ int NXCoCADTest::update_cb(NXOpen::BlockStyler::UIBlock* block)
             //testPoint = CreatePoint(dcoord);
             //tag_t pointTag2 = NULL_TAG;
             //pointTag2 = testPoint->GetTag();
-            Json::Value jCoordinate;
-            jCoordinate["CoordinateX"] = dCoordinate[0];
-            jCoordinate["CoordinateY"] = dCoordinate[1];
-            jCoordinate["CoordinateZ"] = dCoordinate[2];
+            
+            //CreatePoint
+            //Json::Value jCoordinate;
+            //jCoordinate["CoordinateX"] = dCoordinate[0];
+            //jCoordinate["CoordinateY"] = dCoordinate[1];
+            //jCoordinate["CoordinateZ"] = dCoordinate[2];
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('CreatePoint', ";
+            //cmd += json_writer.write(jCoordinate);
+
+            //CreateRect
+            //Json::Value jsonPara;
+            //jsonPara["para1"] = dCoordinate[0];
+            //jsonPara["para2"] = dCoordinate[1];
+            //jsonPara["para3"] = dCoordinate[2];
+            //jsonPara["para4"] = 4.4;
+            //jsonPara["para5"] = 5.5;
+            //jsonPara["overloadType"] = 1;
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('CreateRect', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //CreateSketch
+            //Json::Value jsonPara;
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('CreateSketch', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //Extrude
+            //Json::Value jsonPara;
+            //jsonPara["height"] = dCoordinate[0];
+            //jsonPara["lineNum"] = 2;
+            //jsonPara["sketchNum"] = 3;
+            //jsonPara["sketchID"] = 4;
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('Extrude', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //CreatePlane
+            //Json::Value jsonPara;
+            //jsonPara["x"] = dCoordinate[0];
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('CreatePlane', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //DrawCircle
+            //Json::Value jsonPara;
+            //jsonPara["x"] = dCoordinate[0];
+            //jsonPara["y"] = dCoordinate[1];
+            //jsonPara["z"] = dCoordinate[2];
+            //jsonPara["r"] = dCoordinate[1];
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('DrawCircle', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //CreateSketchOnExtrude
+            //Json::Value jsonPara;
+            //jsonPara["extrudeNum"] = 1;
+            //jsonPara["str1"] = "How are you?";
+            //jsonPara["str2"] = "I am fine thank you and you?";
+            //Json::FastWriter json_writer;
+            //string cmd = "websocket.Invoke('CreateSketchOnExtrude', ";
+            //cmd += json_writer.write(jsonPara);
+
+            //ReverseExtrude
+            Json::Value jsonPara;
+            jsonPara["sketchID"] = "11111111";
+            jsonPara["sketchNum"] = "Howareyou?";
+            jsonPara["extrudeLine"] = "Iamfinethankyouandyou?";
+            jsonPara["targetExtrude"] = "you?";
+            jsonPara["length"] = 1;
             Json::FastWriter json_writer;
-            string cmd = "websocket.Invoke('CreatePoint', ";
-            cmd += json_writer.write(jCoordinate);
+            string cmd = "websocket.Invoke('ReverseExtrude', ";
+            cmd += json_writer.write(jsonPara);
+
             cmd += ", function(){});";
             RunScript(cmd.c_str());
-            
         }
     }
     catch(exception& ex)
