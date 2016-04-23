@@ -221,6 +221,7 @@ distribute/
 include/
 interface/deps/
 js.ext/
+kul/
 module/
 picture/
 script/
@@ -233,5 +234,3 @@ comx.websocket.all.js
 comx.websocket.js
 socket.io.js
 opt_client.js
-kul.entry.xml
-sample.kul
