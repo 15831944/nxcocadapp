@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="gb2312"?>
+<kul_pkg type="ui" name="conflict_resolve" xmlns="http://www.kingmesh.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kingmesh.com kul.xsd">
+    <property name="id">0xa7f81a3e-0x57c8-0x4d33-0xbd-0x2f-0x8d-0xea-0x0f-0xe0-0x2c-0x91</property>
+    <widget type="form" name="conflict_resolve_pane">
+        <property name="id">0xc1bece8f-0xb7de-0x4dda-0x94-0x72-0x4e-0xf6-0x83-0x3a-0x29-0xfa</property>
+        <property name="title">ConflictResolving</property>
+        <property name="titlebar">true</property>
+        <property name="maximum_box">false</property>
+        <property name="minimum_box">false</property>
+        <property name="close_box">false</property>
+        <property name="border">true</property>
+        <property name="bkcolor">gray</property>
+        <property name="resize">false</property>
+        <property name="center">none</property>
+        <property name="toolwindow">true</property>
+        <property name="icon">nil</property>
+        <property name="width">auto</property>
+        <property name="height">auto</property>
+        <property name="font">Microsoft Sans Serif</property>
+        <property name="font_size">10</property>
+        <property name="margin">1</property>
+        <property name="style">popup</property>
+        <property name="show">normal</property>
+        <property name="embed">false</property>
+        <property name="app_window">false</property>
+        <property name="attachment">none</property>
+        <property name="attachment_size">5</property>
+        <property name="javascript">conflict_resolve_pane.js</property>
+        <property name="js_lib">/js/class/widget_wrap.js;/js/socket.io/socket.io.js</property>
+        <property name="default_hot_key">901,ctrl_shift,g;902,ctrl_shift,b;903,ctrl_shift,n;904,ctrl_shift,e;905,ctrl_shift,d</property>
+        <property name="hot_key" />
+        <property name="onHotKey" />
+        <property name="alpha">255</property>
+        <property name="topmost">false</property>
+        <property name="is_service">false</property>
+        <widget type="vbox">
+            <property name="margin">1</property>
+            <property name="adjust">auto</property>
+            <widget type="stack">
+                <property name="margin">3</property>
+                <property name="adjust">fixed</property>
+                <property name="index1_bind" />
+                <property name="border">group</property>
+                <property name="label">冲突解决</property>
+                <widget type="vbox">
+                    <property name="margin">1</property>
+                    <property name="adjust">auto</property>
+                    <widget type="hbox">
+                        <property name="margin">1</property>
+                        <property name="adjust">auto</property>
+                        <widget type="space">
+                            <property name="size">auto</property>
+                        </widget>
+                        <widget type="label">
+                            <property name="id_alias">nil</property>
+                            <property name="width">19</property>
+                            <property name="auto_width">true</property>
+                            <property name="height">8</property>
+                            <property name="border">false</property>
+                            <property name="text">冲突API函数1:</property>
+                            <property name="align">left</property>
+                            <property name="gray">false</property>
+                            <property name="visible">true</property>
+                            <property name="adjust">fixed</property>
+                            <property name="handle_bind" />
+                            <property name="visible_bind" />
+                        </widget>
+                        <widget type="edit" name="text">
+                            <property name="id_alias">nil</property>
+                            <property name="width">60</property>
+                            <property name="height">12</property>
+                            <property name="gray">true</property>
+                            <property name="visible">true</property>
+                            <property name="align">left</property>
+                            <property name="multiline">false</property>
+                            <property name="password">false</property>
+                            <property name="adjust">fixed</property>
+                            <property name="wrap">true</property>
+                            <property name="data">DrawCircle</property>
+                            <property name="readonly">false</property>
+                            <property name="valid_check">false</property>
+                            <property name="valid_okay">.*</property>
+                            <property name="valid_warning">.*</property>
+                            <property name="simple_bind" />
+                            <property name="valid_bind" />
+                            <property name="enable_bind" />
+                            <property name="visible_bind" />
+                            <property name="onChange" />
+                            <property name="handle_bind" />
+                        </widget>
+                        <widget type="label">
+                            <property name="id_alias">nil</property>
+                            <property name="width">19</property>
+                            <property name="auto_width">true</property>
+                            <property name="height">8</property>
+                            <property name="border">false</property>
+                            <property name="text">2:</property>
+                            <property name="align">left</property>
+                            <property name="gray">false</property>
+                            <property name="visible">true</property>
+                            <property name="adjust">fixed</property>
+                            <property name="handle_bind" />
+                            <property name="visible_bind" />
+                        </widget>
+                        <widget type="edit" name="text">
+                            <property name="id_alias">nil</property>
+                            <property name="width">60</property>
+                            <property name="height">12</property>
+                            <property name="gray">true</property>
+                            <property name="visible">true</property>
+                            <property name="align">left</property>
+                            <property name="multiline">false</property>
+                            <property name="password">false</property>
+                            <property name="adjust">fixed</property>
+                            <property name="wrap">true</property>
+                            <property name="data">Extrude</property>
+                            <property name="readonly">false</property>
+                            <property name="valid_check">false</property>
+                            <property name="valid_okay">.*</property>
+                            <property name="valid_warning">.*</property>
+                            <property name="simple_bind" />
+                            <property name="valid_bind" />
+                            <property name="enable_bind" />
+                            <property name="visible_bind" />
+                            <property name="onChange" />
+                            <property name="handle_bind" />
+                        </widget>
+                        <widget type="space">
+                            <property name="size">auto</property>
+                        </widget>
+                    </widget>
+                    <widget type="hbox">
+                        <property name="margin">1</property>
+                        <property name="adjust">auto</property>
+                        <widget type="space">
+                            <property name="size">auto</property>
+                        </widget>
+                        <widget type="label">
+                            <property name="id_alias">nil</property>
+                            <property name="width">19</property>
+                            <property name="auto_width">true</property>
+                            <property name="height">8</property>
+                            <property name="border">false</property>
+                            <property name="text">冲突API参数1:</property>
+                            <property name="align">left</property>
+                            <property name="gray">false</property>
+                            <property name="visible">true</property>
+                            <property name="adjust">fixed</property>
+                            <property name="handle_bind" />
+                            <property name="visible_bind" />
+                        </widget>
+                        <widget type="edit" name="text">
+                            <property name="id_alias">nil</property>
+                            <property name="width">60</property>
+                            <property name="height">12</property>
+                            <property name="gray">true</property>
+                            <property name="visible">true</property>
+                            <property name="align">left</property>
+                            <property name="multiline">false</property>
+                            <property name="password">false</property>
+                            <property name="adjust">fixed</property>
+                            <property name="wrap">true</property>
+                            <property name="data">Circle1</property>
+                            <property name="readonly">false</property>
+                            <property name="valid_check">false</property>
+                            <property name="valid_okay">.*</property>
+                            <property name="valid_warning">.*</property>
+                            <property name="simple_bind" />
+                            <property name="valid_bind" />
+                            <property name="enable_bind" />
+                            <property name="visible_bind" />
+                            <property name="onChange" />
+                            <property name="handle_bind" />
+                        </widget>
+                        <widget type="label">
+                            <property name="id_alias">nil</property>
+                            <property name="width">19</property>
+                            <property name="auto_width">true</property>
+                            <property name="height">8</property>
+                            <property name="border">false</property>
+                            <property name="text">2:</property>
+                            <property name="align">left</property>
+                            <property name="gray">false</property>
+                            <property name="visible">true</property>
+                            <property name="adjust">fixed</property>
+                            <property name="handle_bind" />
+                            <property name="visible_bind" />
+                        </widget>
+                        <widget type="edit" name="text">
+                            <property name="id_alias">nil</property>
+                            <property name="width">60</property>
+                            <property name="height">12</property>
+                            <property name="gray">true</property>
+                            <property name="visible">true</property>
+                            <property name="align">left</property>
+                            <property name="multiline">false</property>
+                            <property name="password">false</property>
+                            <property name="adjust">fixed</property>
+                            <property name="wrap">true</property>
+                            <property name="data">Plane1</property>
+                            <property name="readonly">false</property>
+                            <property name="valid_check">false</property>
+                            <property name="valid_okay">.*</property>
+                            <property name="valid_warning">.*</property>
+                            <property name="simple_bind" />
+                            <property name="valid_bind" />
+                            <property name="enable_bind" />
+                            <property name="visible_bind" />
+                            <property name="onChange" />
+                            <property name="handle_bind" />
+                        </widget>
+                        <widget type="space">
+                            <property name="size">auto</property>
+                        </widget>
+                    </widget>
+                    <widget type="list">
+                        <property name="id_alias">nil</property>
+                        <property name="width">200</property>
+                        <property name="height">90</property>
+                        <property name="gray">false</property>
+                        <property name="visible">true</property>
+                        <property name="adjust">fixed</property>
+                        <property name="type">report</property>
+                        <property name="align">top</property>
+                        <property name="sort">none</property>
+                        <property name="single_selection">true</property>
+                        <property name="auto_arrange">false</property>
+                        <property name="no_label_wrap">false</property>
+                        <property name="edit_labels">false</property>
+                        <property name="show_selection_always">false</property>
+                        <property name="owner_data">false</property>
+                        <property name="simple_bind" />
+                        <property name="table_bind" />
+                        <property name="index2_bind" />
+                        <property name="enable_bind" />
+                        <property name="visible_bind" />
+                        <property name="data">
+                            <header>
+                                <item label="方案编号" width="80" />
+                                <item label="选定次数" width="80" />
+                                <item label="方案描述" width="235" />
+                            </header>
+                            <image_list>var,new,kmas</image_list>
+                            <content>0,1,3,非交集同时，交集先1后2,0,2,1,非交集同时，交集先2后1,0,3,1,非交集同时，交集只执行2,0,4,0,只执行1，放弃2,0,5,0,只执行2，放弃1,0,6,0,非交集同时，交集只执行1,0,6,0,非交集同时，交集只执行2</content>
+                        </property>
+                        <property name="onClick" />
+                        <property name="onDoubleClick" />
+                        <property name="onHeaderClick" />
+                        <property name="handle_bind" />
+                    </widget>
+                </widget>
+            </widget>
+            <widget type="hbox">
+                <property name="margin">1</property>
+                <property name="adjust">auto</property>
+                <widget type="space">
+                    <property name="size">auto</property>
+                </widget>
+                <widget type="pushbutton">
+                    <property name="label">选择</property>
+                    <property name="bitmap">ok48.bmp</property>
+                    <property name="id_alias">nil</property>
+                    <property name="width">50</property>
+                    <property name="height">14</property>
+                    <property name="default">false</property>
+                    <property name="gray">false</property>
+                    <property name="visible">true</property>
+                    <property name="adjust">fixed</property>
+                    <property name="bitmap_align">left</property>
+                    <property name="flat">false</property>
+                    <property name="shadow">false</property>
+                    <property name="shadow_type">soft</property>
+                    <property name="color">auto</property>
+                    <property name="can_check">false</property>
+                    <property name="onClick" />
+                    <property name="enable_bind" />
+                    <property name="simple_bind" />
+                    <property name="valid_bind" />
+                    <property name="visible_bind" />
+                    <property name="handle_bind" />
+                    <property name="tip" />
+                </widget>
+                <widget type="pushbutton">
+                    <property name="label">取消</property>
+                    <property name="bitmap">close.bmp</property>
+                    <property name="id_alias">nil</property>
+                    <property name="width">50</property>
+                    <property name="height">14</property>
+                    <property name="default">false</property>
+                    <property name="gray">false</property>
+                    <property name="visible">true</property>
+                    <property name="adjust">fixed</property>
+                    <property name="bitmap_align">left</property>
+                    <property name="flat">false</property>
+                    <property name="shadow">false</property>
+                    <property name="shadow_type">soft</property>
+                    <property name="color">auto</property>
+                    <property name="can_check">false</property>
+                    <property name="onClick">pane.Close();</property>
+                    <property name="enable_bind" />
+                    <property name="simple_bind" />
+                    <property name="valid_bind" />
+                    <property name="visible_bind" />
+                    <property name="handle_bind" />
+                    <property name="tip" />
+                </widget>
+            </widget>
+        </widget>
+    </widget>
+</kul_pkg>
