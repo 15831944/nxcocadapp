@@ -345,7 +345,7 @@
                                     <item label="状态" width="135" />
                                 </header>
                                 <image_list>new</image_list>
-                                <content>0,Beam.bdf,192.168.1.107,0,运算中,0,Semi.kms,192.168.1.108,0,运算中,0,srail_fixed.kms,192.168.1.107,1,等待中,0,yiziban.kms,192.168.1.107,2,等待中,0,fh.kms,192.168.1.107,3,等待中,0,fh30000.kms,192.168.1.108,1,等待中</content>
+                                <content>0,Beam.bdf,192.168.1.107,0,已完成,0,Semi.kms,192.168.1.108,0,运算中,0,fh.kms,192.168.1.107,1,运算中,0,yiziban.kms,192.168.1.107,2,等待中,0,srail_fixed.kms,192.168.1.107,0,等待中,0,fh30000.kms,192.168.1.108,1,等待中,0,Model.bdf,192.168.1.107,3,等待中</content>
                             </property>
                             <property name="onClick" />
                             <property name="onDoubleClick" />
@@ -381,7 +381,7 @@
                             <property name="password">false</property>
                             <property name="adjust">fixed</property>
                             <property name="wrap">true</property>
-                            <property name="data">42.9</property>
+                            <property name="data">50</property>
                             <property name="readonly">true</property>
                             <property name="valid_check">false</property>
                             <property name="valid_okay">.*</property>
