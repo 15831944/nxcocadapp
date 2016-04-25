@@ -588,7 +588,7 @@
                                     <item label="当前数值" width="200" />
                                 </header>
                                 <image_list>var,new,kmas</image_list>
-                                <content>0,Desplacement,70.8024,0,Stress,71.4054</content>
+                                <content>0,Displacement,70.8024,0,Stress,71.4054</content>
                             </property>
                             <property name="onClick" />
                             <property name="onDoubleClick" />
