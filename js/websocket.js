@@ -139,21 +139,27 @@ websocket.on('ConnectToDeamonMgr', function(data){
             deamon.on('CoCADExtrude', function(data){
                 var sourceID = data.parameters.sourceID;
                 var parameters = data.parameters.parameters;
-                var dHeight = parameters.height;
-                var nLineNum = parameters.lineNum;
-                var nSketchNum = parameters.sketchNum;
-                var nSketchID = parameters.sketchID;
+                //var dHeight = parameters.height;
+                //var nLineNum = parameters.lineNum;
+                //var nSketchNum = parameters.sketchNum;
+                //var nSketchID = parameters.sketchID;
+				
+				var dheight = parameters.height;
+
+				var strTargetSketchName = parameters.targetSketchName;
+
+				var strSetName = parameters.setName;
                 if(sourceID == clientID)//Same source doesn't need to accept.
                 {
-                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID);
+                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + dheight + " " + strTargetSketchName + " " + strSetName);// + " " + nSketchID);
                     data.parameters.ret = "Client id: " + clientID + "has received action: Extrude and ignored";
-                    appendFileSync(messageQueue, "Extrude:" + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID + "#");
+                    appendFileSync(messageQueue, "Extrude:" + dheight + " " + strTargetSketchName + " " + strSetName + "#");// + " " + nSketchID + "#");
                 }
                 else
                 {
-                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " parameters: " + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID);
+                    appendFileSync(runningLog, "Received Extrude action from Server: sourceID: " + sourceID + " parameters: " + dheight + " " + strTargetSketchName + " " + strSetName);// + " " + nSketchID);
                     data.parameters.ret = "Client id: " + clientID + "has received action: Extrude and accepted";
-                    appendFileSync(messageQueue, "Extrude:" + dHeight + " " + nLineNum + " " + nSketchNum + " " + nSketchID + "#");
+                    appendFileSync(messageQueue, "Extrude:" + dheight + " " + strTargetSketchName + " " + strSetName + "#");
                 }
                 deamon.send(data);
             });
@@ -202,20 +208,29 @@ websocket.on('ConnectToDeamonMgr', function(data){
             deamon.on('CoCADCreateSketchOnExtrude', function(data){
                 var sourceID = data.parameters.sourceID;
                 var parameters = data.parameters.parameters;
-                var nExtrudeNum = parameters.extrudeNum;
-                var str1 = parameters.str1;
-                var str2 = parameters.str2;
+                //var nExtrudeNum = parameters.extrudeNum;
+                //var str1 = parameters.str1;
+                //var str2 = parameters.str2;
+				
+				var strTargetExtrude = parameters.targetExtrude;
+
+				var str1 = parameters.str1;
+
+				var str2 = parameters.str2;
+				
+				var strSetName = parameters.setName;
+				
                 if(sourceID == clientID)//Same source doesn't need to accept.
                 {
-                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + nExtrudeNum + " " + str1 + " " + str2);
+                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + strTargetExtrude + " " + str1 + " " + str2 + " " + strSetName);
                     data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketchOnExtrude and ignored";
-                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + nExtrudeNum + " " + str1 + " " + str2 + "#");
+                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + strTargetExtrude + " " + str1 + " " + str2 + " " + strSetName + "#");
                 }
                 else
                 {
-                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " parameters: " + nExtrudeNum + " " + str1 + " " + str2);
+                    appendFileSync(runningLog, "Received CreateSketchOnExtrude action from Server: sourceID: " + sourceID + " parameters: " + strTargetExtrude + " " + str1 + " " + str2 + " " + strSetName);
                     data.parameters.ret = "Client id: " + clientID + "has received action: CreateSketchOnExtrude and accepted";
-                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + nExtrudeNum + " " + str1 + " " + str2 + "#");
+                    appendFileSync(messageQueue, "CreateSketchOnExtrude:" + strTargetExtrude + " " + str1 + " " + str2 + " " + strSetName + "#");
                 }
                 deamon.send(data);
             });
@@ -223,22 +238,31 @@ websocket.on('ConnectToDeamonMgr', function(data){
             deamon.on('CoCADReverseExtrude', function(data){
                 var sourceID = data.parameters.sourceID;
                 var parameters = data.parameters.parameters;
-                var strSketchID = parameters.sketchID;
-                var strSketchNum = parameters.sketchNum;
-                var strExtrudeLine = parameters.extrudeLine;
-                var strTargetExtrude = parameters.targetExtrude;
-                var dLength = parameters.length;
+                //var strSketchID = parameters.sketchID;
+                //var strSketchNum = parameters.sketchNum;
+                //var strExtrudeLine = parameters.extrudeLine;
+                //var strTargetExtrude = parameters.targetExtrude;
+                //var dLength = parameters.length;
+				
+				
+				var strTargetSketchName = parameters.targetSketchName;
+
+				var strTargetExtrueName = parameters.targetExtrueName;
+
+				var nLength = parameters.length;
+	
+				var strSetName = parameters.setName;
                 if(sourceID == clientID)//Same source doesn't need to accept.
                 {
-                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength);
+                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " (ignored)parameters: " + strTargetSketchName + " " + strTargetExtrueName + " " + strSetName + " " + nLength);// + " " + dLength);
                     data.parameters.ret = "Client id: " + clientID + "has received action: ReverseExtrude and ignored";
-                    appendFileSync(messageQueue, "ReverseExtrude:" + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength + "#");
+                    appendFileSync(messageQueue, "ReverseExtrude:" + strTargetSketchName + " " + strTargetExtrueName + " " + strSetName + " " + nLength + "#");// + " " + dLength + "#");
                 }
                 else
                 {
-                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " parameters: " + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength);
+                    appendFileSync(runningLog, "Received ReverseExtrude action from Server: sourceID: " + sourceID + " parameters: " + strTargetSketchName + " " + strTargetExtrueName + " " + strSetName + " " + nLength);
                     data.parameters.ret = "Client id: " + clientID + "has received action: ReverseExtrude and accepted";
-                    appendFileSync(messageQueue, "ReverseExtrude:" + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + dLength + "#");
+                    appendFileSync(messageQueue, "ReverseExtrude:" + strTargetSketchName + " " + strTargetExtrueName + " " + strSetName + " " + nLength + "#");
                 }
                 deamon.send(data);
             });
@@ -324,10 +348,10 @@ websocket.on('CreateSketch', function(data){
 //Extrude
 websocket.on('Extrude', function(data){
     var dheight = data.parameters.height;
-    var nlineNum = data.parameters.lineNum;
-    var nsketchNum = data.parameters.sketchNum;
-    var nsketchID = data.parameters.sketchID;
-    appendFileSync(runningLog, "Action detected: Extrude:" + dheight + " " + nlineNum + " " + nsketchNum + " " + nsketchID);
+    var strTargetSketchName = data.parameters.targetSketchName;
+    var strSetName = data.parameters.setName;
+   // var nsketchID = data.parameters.sketchID;
+    appendFileSync(runningLog, "Action detected: Extrude:" + dheight + " " + strTargetSketchName + " " + strSetName);// + " " + nsketchID);
     if(deamon.IsConnect())
     {
         deamon.Invoke('OnActionFire', {'actionID' : 'Extrude', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)
@@ -368,10 +392,11 @@ websocket.on('DrawCircle', function(data){
 
 //CreateSketchOnExtrude
 websocket.on('CreateSketchOnExtrude', function(data){
-    var nExtrudeNum = data.parameters.extrudeNum;
+    var strTargetExtrude = data.parameters.targetExtrude;
     var str1 = data.parameters.str1;
     var str2 = data.parameters.str2;
-    appendFileSync(runningLog, "Action detected: CreateSketchOnExtrude:" + nExtrudeNum + " " + str1 + " " + str2);
+    var strSetName = data.parameters.setName;
+    appendFileSync(runningLog, "Action detected: CreateSketchOnExtrude:" + strTargetExtrude + " " + str1 + " " + str2 + " " + strSetName);
     if(deamon.IsConnect())
     {
         deamon.Invoke('OnActionFire', {'actionID' : 'CreateSketchOnExtrude', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)
@@ -383,12 +408,14 @@ websocket.on('CreateSketchOnExtrude', function(data){
 
 //ReverseExtrude
 websocket.on('ReverseExtrude', function(data){
-    var strSketchID = data.parameters.sketchID;
-    var strSketchNum = data.parameters.sketchNum;
-    var strExtrudeLine = data.parameters.extrudeLine;
-    var strTargetExtrude = data.parameters.targetExtrude;
+    var strTargetSketchName = data.parameters.targetSketchName;
+    var strTargetExtrueName = data.parameters.targetExtrueName;
     var nLength = data.parameters.length;
-    appendFileSync(runningLog, "Action detected: ReverseExtrude:" + strSketchID + " " + strSketchNum + " " + strExtrudeLine + " " + strTargetExtrude + " " + nLength);
+	
+    var strSetName = data.parameters.setName;
+    //var strTargetExtrude = data.parameters.targetExtrude;
+
+    appendFileSync(runningLog, "Action detected: ReverseExtrude:" + strTargetSketchName + " " + strTargetExtrueName + " " + strSetName + " " + nLength);// + " " + nLength);
     if(deamon.IsConnect())
     {
         deamon.Invoke('OnActionFire', {'actionID' : 'ReverseExtrude', 'clientID' : clientID, 'parameters' : data.parameters}, function(data)

@@ -342,6 +342,42 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\BlockCreateExtrude.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreatePoint.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockcreateRectSameX.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateRectSameY.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateRectSameZ.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateSketchOnextrude.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockDrawCircle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockResverseExtrude.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\json\src\json_reader.cpp"
 				>
 				<FileConfiguration
@@ -402,7 +438,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\MainMenu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NXCoCADTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NXFunction.cpp"
 				>
 			</File>
 			<File
@@ -432,11 +476,55 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\BlockCreateExtrude.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreatePoint.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockcreateRectSameX.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateRectSameY.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateRectSameZ.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockCreateSketchOnextrude.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockDrawCircle.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlockResverseExtrude.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileUtils.h"
+				>
+			</File>
+			<File
 				RelativePath=".\json\json.h"
 				>
 			</File>
 			<File
+				RelativePath=".\MainMenu.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NXCoCADTest.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NXFunction.h"
 				>
 			</File>
 			<File

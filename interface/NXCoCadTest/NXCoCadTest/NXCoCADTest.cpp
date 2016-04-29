@@ -36,7 +36,9 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "NXCoCADTest.hpp"
-
+#include "NXFunction.h"
+#include "MainMenu.hpp"
+#include "FileUtils.h"
 using namespace NXOpen;
 using namespace NXOpen::BlockStyler;
 using namespace std;
@@ -121,6 +123,74 @@ public :
 
 }; 
 
+double dCoordinate[3];
+UINT g_timer_id = 0;
+
+void timer_cb(HWND,UINT,UINT_PTR,DWORD)
+{
+	KillTimer(NULL,g_timer_id);
+
+	int temp = 0;
+	char buffer[300];
+	//taskNum = 1;
+	int num = 1;
+	int currentNum = 0;
+	int strLength = 0;
+	UI *myUI = UI::GetUI();
+	NXMessageBox *message = myUI->NXMessageBox();
+	//Sleep(2000);
+	//while(1)
+	{
+		currentNum = 0;
+		lockBase* lockbase = new lockBase();  
+		lockbase->lock();  
+		ifstream in("Y:\\nxcocadapp\\data\\MessageQueue.log"); 
+		lockbase->unlock(); 
+		if (! in.is_open())  
+		{ 
+			message->Show("提示",NXMessageBox::DialogTypeQuestion,"failed");
+		}  
+		double x = 0,y = 0,z = 0;
+		while (!in.eof() )  
+		{  
+			lockbase->lock();  
+			in.getline (buffer,300);
+			lockbase->unlock(); 
+			/*message->Show("提示",NXMessageBox::DialogTypeQuestion,buffer);*/
+			strLength = strlen(buffer);
+			if (strLength > 0 && buffer[strLength - 1] == '#')
+			{
+				currentNum ++;
+				if (currentNum == taskNum)
+				{
+					//sprintf(task,"%s",buffer);
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					//sprintf(nn,"%d",taskNum);
+					//message->Show("读取出来的是",NXMessageBox::DialogTypeQuestion,buffer);
+					
+					realizeOperation(buffer);
+					//message->Show("thread",NXMessageBox::DialogTypeQuestion,nn);
+					//createPoint(x,y,z);
+					//createSketch1();
+					taskNum ++;
+					break;
+				}
+			}
+		}
+		in.close();
+		delete(lockbase);
+
+		num ++;
+		//Sleep(2000);
+	}
+
+	//message->Show("thread",NXMessageBox::DialogTypeQuestion,"aaaaaaa");
+
+
+	g_timer_id = SetTimer(NULL,0,2000,timer_cb);
+}
+
+
 //------------------------------- DIALOG LAUNCHING ---------------------------------
 //
 //    Before invoking this application one needs to open any part/empty part in NX
@@ -145,9 +215,7 @@ public :
 extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 {
     NXCoCADTest *theNXCoCADTest = NULL;
-    nTimerID = 0;
-    bTimerEnable = false;
-    nSampleTime = 500;
+	taskNum = 1;
 	char buffer[255];
 	int temp;
 	int i = 0;
@@ -159,15 +227,24 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
 
     try
     {
-        theNXCoCADTest = new NXCoCADTest();
-		handle = CreateThread(NULL, 0, ThreadProc, (LPVOID)&test, 0, &numThreadId);
+        //theNXCoCADTest = new NXCoCADTest();
+		//handle = CreateThread(NULL, 0, ThreadProc, (LPVOID)&test, 0, &numThreadId);
 
         // The following method shows the dialog immediately
-        theNXCoCADTest->Show();
-        if(bTimerEnable)
-        {
-            KillTimer(NULL, nTimerID);
-        }
+        //theNXCoCADTest->Show();
+        //if(bTimerEnable)
+        //{
+            //KillTimer(NULL, nTimerID);
+        //}
+		g_timer_id = SetTimer(NULL, 0 ,2000, timer_cb);
+		if(!Initialize())
+		{
+			NXCoCADTest::theUI->NXMessageBox()->Show("Iniliazation Failed", NXOpen::NXMessageBox::DialogTypeError, "Iniliazation Failed");
+			return;
+		}
+		 MainMenu *theMainMenu = NULL;
+		 theMainMenu = new MainMenu();
+		 theMainMenu->Show();
     }
     catch(exception& ex)
     {
@@ -194,6 +271,7 @@ extern "C" DllExport void  ufusr(char *param, int *retcod, int param_len)
         Terminate();
         //Terminate();
     }
+	KillTimer(NULL,g_timer_id);
 }
 
 //------------------------------------------------------------------------------
@@ -540,15 +618,16 @@ bool Initialize(void)
 
     Sleep(500);
     //Activated Timer
-    if(!bTimerEnable)
-    {
-        bTimerEnable = true;
-        nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
-    }
-    else
-    {
-        MessageBox(NULL, "SetTimer Failure!", "Error!", 0);
-    }
+    
+	//if(!bTimerEnable)
+    //{
+        //bTimerEnable = true;
+        //nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
+    //}
+    //else
+    //{
+        //MessageBox(NULL, "SetTimer Failure!", "Error!", 0);
+    //}
 
    /* ret = RunScript("IsServiceConnected();");
     if (ret == "false")
@@ -651,9 +730,9 @@ void createPoint(double x,double y,double z)
 
 }
 
-void CALLBACK TimerProc(HWND hwnd, UINT message, UINT idTimer, DWORD dwTime)
-{
-    KillTimer(NULL, nTimerID);
-    MessageBox(NULL, "Timer!", "", 0);
-    nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
-}
+//void CALLBACK TimerProc(HWND hwnd, UINT message, UINT idTimer, DWORD dwTime)
+//{
+    //KillTimer(NULL, nTimerID);
+    //MessageBox(NULL, "Timer!", "", 0);
+    //nTimerID = SetTimer(NULL, 0, nSampleTime, (TIMERPROC)TimerProc);
+//}
