@@ -3,7 +3,7 @@
     <property name="id">0xdeaf1b98-0x4f90-0x4f8f-0xa5-0xe4-0x1c-0xb6-0x55-0x9d-0x7e-0x39</property>
     <widget type="form" name="MainPane_pane">
         <property name="id">0x54212935-0x2346-0x46a7-0xa2-0x0c-0xc4-0x5e-0x65-0x94-0x6f-0xbe</property>
-        <property name="title">NXCoCADApp</property>
+        <property name="title">NXCOCADCAEApp</property>
         <property name="titlebar">true</property>
         <property name="maximum_box">false</property>
         <property name="minimum_box">false</property>
@@ -160,7 +160,7 @@
                                     <property name="password">false</property>
                                     <property name="adjust">fixed</property>
                                     <property name="wrap">true</property>
-                                    <property name="data">192.168.1.108</property>
+                                    <property name="data">192.168.1.107</property>
                                     <property name="readonly">true</property>
                                     <property name="valid_check">false</property>
                                     <property name="valid_okay">.*</property>
@@ -288,16 +288,54 @@
                                 <subitem label="root" bitmap="new" bitmap_selected="arrow" id="auto">
                                     <subitem label="CreateSketch:#" bitmap="new" bitmap_selected="arrow" id="auto">
                                         <subitem label="CreateRect:-50 20 50 -20 0#" bitmap="new" bitmap_selected="arrow" id="auto">
-                                            <subitem label="Extrude:5 1 0 1#" bitmap="new" bitmap_selected="arrow" id="auto">
-                                                <subitem label="CreateSketchOnExtrude:2 'EDGE * 130 * 140 {(-9.5,-4.5,5)(-0,-4.5,5)(9.5,-4.5,5) EXTRUDE(2)}' 'FACE 130 {(-0,-4.5,0) EXTRUDE(2)}')#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                            <subitem label="Extrude:5 'mainSketch' 'extrude1'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                <subitem label="CreateSketchOnExtrude:'extrude1' 'EDGE * 130 * 140 {(50,20,5)(0,20,5)(-50,20,5) EXTRUDE(2)}' 'FACE 130 {(0,0,5) EXTRUDE(2)}' 'sketch1'#" bitmap="new" bitmap_selected="arrow" id="auto">
                                                     <subitem label="CreateRect:-50 20 50 15 5#" bitmap="new" bitmap_selected="arrow" id="auto">
-                                                        <subitem label="CreateRect:-50 -15 50 -20 5#" bitmap="new" bitmap_selected="arrow" id="auto">
-                                                            <subitem label="Extrude:40 5 1 3#" bitmap="new" bitmap_selected="arrow" id="auto"></subitem>
+                                                        <subitem label="CreateSketchOnExtrude:'extrude1' 'EDGE * 130 * 140 {(50,20,5)(0,20,5)(-50,20,5) EXTRUDE(2)}' 'FACE 130 {(0,0,5) EXTRUDE(2)}' 'sketch2'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                            <subitem label="CreateRect:-50 -15 50 -20 5#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                <subitem label="Extrude:40 'sketch1' 'extrude2'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                    <subitem label="Extrude:40 'sketch2' 'extrude3'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                        <subitem label="CreateSketchOnExtrude:'extrude2' 'EDGE * 150 * 160 {(-50,-20,45)(0,-20,45)(50,-20,45) EXTRUDE(6)}' 'FACE 140 {(0,-20,25) EXTRUDE(6)}' 'sketch4'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                            <subitem label="CreateRect:-25 45 50 15 20 1#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                <subitem label="ReverseExtrude:'sketch3' 'extrude2' '5' 'reverseExtrude1'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                    <subitem label="CreateSketchOnExtrude:'extrude3' 'EDGE * 130 * 140 {(-50,-20,45)(0,-20,45)(50,-20,45) EXTRUDE(6)}' 'FACE 140 {(0,-20,25) EXTRUDE(6)}' 'sketch4'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                        <subitem label="CreateRect:-25 45 50 15 -20 1#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                            <subitem label="ReverseExtrude:'sketch4' 'extrude3' '5' 'reverseExtrude2'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                                <subitem label="CreateSketchOnExtrude:'extrude3' 'EDGE * 130 * 140 {(-50,-20,45)(-37.5,-20,45)(-25,-20,45) EXTRUDE(6)}' 'FACE 140 {(0,-20,25) EXTRUDE(6)}' 'sketch5'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                                                    <subitem label="DrawCircle:-38.3834013613238 20.0 33.4279639846066 4#"></subitem>
+                                                                                                </subitem>
+                                                                                            </subitem>
+                                                                                        </subitem>
+                                                                                    </subitem>
+                                                                                </subitem>
+                                                                            </subitem>
+                                                                        </subitem>
+                                                                    </subitem>
+                                                                </subitem>
+                                                            </subitem>
+                                                        </subitem>
+                                                    </subitem>
+                                                </subitem>
+                                                <!--subitem label="CreateSketchOnExtrude:'extrude1' 'EDGE * 130 * 140 {(50,20,5)(0,20,5)(-50,20,5) EXTRUDE(2)}' 'FACE 130 {(0,0,5) EXTRUDE(2)}' 'sketch2'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                    <subitem label="CreateRect:-50 -15 50 -20 5#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                        <subitem label="Extrude:40 5 1 3#" bitmap="new" bitmap_selected="arrow" id="auto"></subitem>
+                                                    </subitem>
+                                                </subitem-->
+                                            </subitem>
+                                        </subitem>
+                                        <!--subitem label="DrawCircle:-38.3834013613238 -20.0 33.4279639846066 4#">
+                                            <subitem label="DrawCircle:-38.3834013613238 20.0 33.4279639846066 4#">
+                                                <subitem label="ReverseExtrude:'mainSketch' 'extrude1' '5' 'reverseExtrude1'#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                    <subitem label="CreateSketchOnExtrude:'extrude1' 'EDGE * 130 * 140 {(-9.5,-4.5,5)(-0,-4.5,5)(9.5,-4.5,5) EXTRUDE(2)}' 'FACE 130 {(-0,-4.5,0) EXTRUDE(2)}')#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                        <subitem label="CreateRect:-50 20 50 15 5#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                            <subitem label="CreateRect:-50 -15 50 -20 5#" bitmap="new" bitmap_selected="arrow" id="auto">
+                                                                <subitem label="Extrude:40 5 1 3#" bitmap="new" bitmap_selected="arrow" id="auto"></subitem>
+                                                            </subitem>
                                                         </subitem>
                                                     </subitem>
                                                 </subitem>
                                             </subitem>
-                                        </subitem>
+                                        </subitem-->
                                     </subitem>
                                 </subitem>
                             </property>

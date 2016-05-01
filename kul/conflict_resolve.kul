@@ -160,7 +160,7 @@
                             <property name="password">false</property>
                             <property name="adjust">fixed</property>
                             <property name="wrap">true</property>
-                            <property name="data">Circle1</property>
+                            <property name="data">sketch1</property>
                             <property name="readonly">false</property>
                             <property name="valid_check">false</property>
                             <property name="valid_okay">.*</property>
@@ -197,7 +197,7 @@
                             <property name="password">false</property>
                             <property name="adjust">fixed</property>
                             <property name="wrap">true</property>
-                            <property name="data">Plane1</property>
+                            <property name="data">sketch1</property>
                             <property name="readonly">false</property>
                             <property name="valid_check">false</property>
                             <property name="valid_okay">.*</property>
